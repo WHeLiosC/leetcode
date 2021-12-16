@@ -170,7 +170,9 @@ public class DoublePointer {
     }
 
     public static void main(String[] args) {
-        DoublePointer r = new DoublePointer();
-        r.removeDuplicates(new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
+        DoublePointer dp = new DoublePointer();
+        dp.removeDuplicates(new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
     }
+
+
 }
