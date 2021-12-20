@@ -137,6 +137,121 @@ public class MoveWindow {
     }
 
     /**
+     * 438. 找到字符串中所有字母异位词
+     *
+     * @param s 字符串
+     * @param p 字符串
+     * @return 找到 s 中所有 p 的异位词的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+     * 异位词指由相同字母重排列形成的字符串（包括相同的字符串）
+     */
+    public List<Integer> findAnagrams(String s, String p) {
+        int sLen = s.length();
+        int pLen = p.length();
+        List<Integer> result = new LinkedList<>();
+        if (sLen < pLen) {
+            return result;
+        }
+        Map<Character, Integer> pMap = new HashMap<>(pLen);
+        Map<Character, Integer> sMap = new HashMap<>(pLen);
+        // 将目标字符串中的字母加入pMap中
+        for (int i = 0; i < pLen; i++) {
+            Character tmp = p.charAt(i);
+            pMap.put(tmp, pMap.getOrDefault(tmp, 0) + 1);
+        }
+        // 加入字符串s的第一个窗口的字母
+        for (int i = 0; i < pLen; i++) {
+            Character tmp = s.charAt(i);
+            if (pMap.containsKey(tmp)) {
+                sMap.put(tmp, sMap.getOrDefault(tmp, 0) + 1);
+            }
+        }
+        int start = 0, end = pLen - 1;
+        while (end < sLen) {
+            // 是异位词，在结果列表中加入窗口开始索引
+            if (isAnagrams(sMap, pMap)) {
+                result.add(start);
+            }
+            // 移动窗口
+            // 移除字母
+            Character tmp = s.charAt(start);
+            if (pMap.containsKey(tmp)) {
+                sMap.put(tmp, sMap.get(tmp) - 1);
+            }
+            start++;
+            // 添加字母
+            if (end + 1 < sLen && pMap.containsKey(s.charAt(end + 1))) {
+                sMap.put(s.charAt(end + 1), sMap.getOrDefault(s.charAt(end + 1), 0) + 1);
+            }
+            end++;
+        }
+        return result;
+    }
+
+    private boolean isAnagrams(Map<Character, Integer> sMap, Map<Character, Integer> pMap) {
+        for (Character c : pMap.keySet()) {
+            if (sMap.getOrDefault(c, 0) - pMap.get(c) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 3. 无重复字符的最长子串
+     *
+     * @param s 字符串
+     * @return 返回其中不含有重复字符的 最长子串 的长度
+     */
+    public int lengthOfLongestSubstring(String s) {
+        int start = 0;
+        int maxSubLen = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); ++i) {
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+            while (hasDuplication(map)) {
+                Character tmp = s.charAt(start);
+                map.put(tmp, map.get(tmp) - 1);
+                if (map.get(tmp) == 0) {
+                    map.remove(tmp);
+                }
+                ++start;
+            }
+            maxSubLen = Math.max(maxSubLen, i - start + 1);
+        }
+        return maxSubLen;
+    }
+
+    private boolean hasDuplication(Map<Character, Integer> map) {
+        for (Character key : map.keySet()) {
+            if (map.get(key) > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * GOOD 解法
+     *
+     * @param s 同上
+     * @return 同上
+     */
+    public int lengthOfLongestSubstring2(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        // map 记录一个字符上一次出现的位置，在重复之后将左指针直接跳转到记录的下一个位置
+        int max = 0, start = 0;
+        for (int end = 0; end < s.length(); end++) {
+            char ch = s.charAt(end);
+            if (map.containsKey(ch)) {
+                start = Math.max(map.get(ch) + 1, start);
+            }
+            max = Math.max(max, end - start + 1);
+            map.put(ch, end);
+        }
+        return max;
+    }
+
+    /**
      * 904. 水果成篮
      *
      * @param fruits 第 i 棵树产生 fruits[i] 型的水果。
@@ -183,7 +298,12 @@ public class MoveWindow {
         return maxFruitNum;
     }
 
-    // GOOD 解法
+    /**
+     * GOOD 解法
+     *
+     * @param fruits 同上
+     * @return 同上
+     */
     public int totalFruit2(int[] fruits) {
         if (fruits == null || fruits.length == 0) {
             return 0;
@@ -212,5 +332,6 @@ public class MoveWindow {
         mw.minSubArrayLen(7, new int[]{2, 3, 1, 2, 4, 3});
         mw.minWindow("a", "a");
         mw.totalFruit(new int[]{1, 0, 1, 4, 1, 4, 1, 2, 3});
+        mw.findAnagrams("aba", "ab");
     }
 }
