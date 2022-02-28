@@ -1,5 +1,7 @@
 package List;
 
+import java.util.*;
+
 /**
  * @author Li Hui
  */
@@ -30,6 +32,74 @@ public class RemoveElements {
         }
         return head;
     }
+
+    /**
+     * 19. 删除链表的倒数第 N 个结点
+     *
+     * @param head 头结点
+     * @param n    正整数
+     * @return 删除链表的倒数第 n 个结点，并且返回链表的头结点
+     */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        Map<Integer, ListNode> map = new HashMap<Integer, ListNode>();
+        ListNode dummyHead = new ListNode();
+        dummyHead.next = head;
+        ListNode cur = head;
+        ListNode pre = dummyHead;
+
+        // 遍历得到链表的长度
+        for (int i = 1; cur != null; i++, cur = cur.next) {
+            map.put(i, pre);
+            pre = cur;
+        }
+
+        int size = map.size();
+        ListNode removeNodePre = map.get(size - n + 1);
+        removeNodePre.next = removeNodePre.next.next;
+
+        return dummyHead.next;
+    }
+
+    // 使用栈结构
+    public ListNode removeNthFromEnd2(ListNode head, int n) {
+        Deque<ListNode> deque = new LinkedList<ListNode>();
+        ListNode dummyHead = new ListNode();
+        dummyHead.next = head;
+        ListNode cur = dummyHead;
+        while (cur != null) {
+            deque.push(cur);
+            cur = cur.next;
+        }
+        for (int i = 0; i < n; i++) {
+            deque.pop();
+        }
+        ListNode pre = deque.peek();
+        pre.next = pre.next.next;
+        return dummyHead.next;
+    }
+
+    // 使用快慢指针
+    public ListNode removeNthFromEnd3(ListNode head, int n) {
+        ListNode dummyHead = new ListNode();
+        dummyHead.next = head;
+
+        ListNode fast = head;
+        ListNode slow = dummyHead;
+
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        slow.next = slow.next.next;
+
+        return dummyHead.next;
+    }
+
 
     public static void main(String[] args) {
         ListNode node = new ListNode(5);
