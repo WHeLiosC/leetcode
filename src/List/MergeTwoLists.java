@@ -1,5 +1,7 @@
 package List;
 
+import java.util.PriorityQueue;
+
 /**
  * @author lihui
  */
@@ -45,5 +47,32 @@ public class MergeTwoLists {
             tmp = mergeTwoLists(tmp, lists[i]);
         }
         return tmp;
+    }
+
+    // 优先队列方法
+    public ListNode mergeKLists2(ListNode[] lists) {
+        if (lists.length == 0) {
+            return null;
+        }
+        if (lists.length == 1) {
+            return lists[0];
+        }
+        ListNode dummyHead = new ListNode();
+        ListNode p = dummyHead;
+        PriorityQueue<ListNode> priorityQueue = new PriorityQueue<>(lists.length, (a, b)->(a.val - b.val));
+        for (ListNode head : lists) {
+            if (head != null) {
+                priorityQueue.add(head);
+            }
+        }
+        while (!priorityQueue.isEmpty()){
+            ListNode node = priorityQueue.poll();
+            p.next = node;
+            if(node.next != null){
+                priorityQueue.add(node.next);
+            }
+            p = p.next;
+        }
+        return dummyHead.next;
     }
 }
