@@ -9,6 +9,12 @@ import java.util.TreeMap;
  * @author Lihui
  */
 public class TopKFrequent {
+    /**
+     * 347.前 K 个高频元素
+     * @param nums 非空的整数数组
+     * @param k 正整数
+     * @return 返回数组中出现频率前 k 高的元素
+     */
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> map = new TreeMap<>();
         for (int num : nums) {
