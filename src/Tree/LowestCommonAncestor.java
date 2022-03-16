@@ -33,6 +33,7 @@ public class LowestCommonAncestor {
                     if (toFindP == toFindQ) {
                         return node;
                     }
+
                     if (node.right != null && node.right != pre) {
                         cur = node.right;
                         break;
@@ -83,5 +84,32 @@ public class LowestCommonAncestor {
         } else { // 若找到两个节点
             return root;
         }
+    }
+
+    /**
+     * 235. 二叉搜索树的最近公共祖先
+     *
+     * @param root 根节点
+     * @param p    树中的节点
+     * @param q    树中的节点
+     * @return 找到该树中两个指定节点的最近公共祖先
+     */
+    public TreeNode lowestCommonAncestorBST(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null){
+            return null;
+        }
+        // 在根节点的两侧，则返回根节点
+        if (Math.min(p.val, q.val) <= root.val && Math.max(p.val, q.val) >= root.val) {
+            return root;
+        }
+        // 如果两者中的最大值比根节点的值要小，则向左子树递归
+        if (Math.max(p.val, q.val) < root.val) {
+            return lowestCommonAncestorBST(root.left, p, q);
+        }
+        // 如果两者中的最小值比根节点的值要大，则向右子树递归
+        if (Math.min(p.val, q.val) > root.val) {
+            return lowestCommonAncestorBST(root.right, p, q);
+        }
+        return null;
     }
 }
