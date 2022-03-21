@@ -1,4 +1,4 @@
-package preSum;
+package PreSum;
 
 /**
  * 304. 二维区域和检索 - 矩阵不可变 (10-9-21)
