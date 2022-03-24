@@ -47,4 +47,39 @@ public class UniquePaths {
         }
         return (int) ans;
     }
+
+    /**
+     * 63. 不同路径 II
+     *
+     * @param obstacleGrid 网格中的障碍物和空位置分别用 1 和 0 来表示
+     * @return 从左上角到右下角将会有多少条不同的路径
+     */
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int row = obstacleGrid.length;
+        int col = obstacleGrid[0].length;
+        int[][] dp = new int[row][col];
+
+        for (int i = 0; i < row && obstacleGrid[i][0] == 0; i++) {
+            dp[i][0] = 1;
+        }
+
+        for (int i = 0; i < col && obstacleGrid[0][i] == 0; i++) {
+            dp[0][i] = 1;
+        }
+
+        for (int i = 1; i < row; i++) {
+            for (int j = 1; j < col; j++) {
+                if (obstacleGrid[i][j] == 0) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return dp[row - 1][col - 1];
+    }
+
+    public static void main(String[] args) {
+        UniquePaths u = new UniquePaths();
+        int[][] test = {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
+        int a = u.uniquePathsWithObstacles(test);
+    }
 }
