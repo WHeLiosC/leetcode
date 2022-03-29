@@ -20,7 +20,7 @@ public class CanPartition {
             return false;
         }
 
-        // 转换为01背包问题
+        // 转换为0-1背包问题
         int target = sum / 2;
         int[] maxValue = new int[target + 1];
         for (int i = 0; i < nums.length; i++) {
