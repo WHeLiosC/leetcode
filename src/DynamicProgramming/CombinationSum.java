@@ -9,7 +9,7 @@ public class CombinationSum {
      *
      * @param nums   由 不同 整数组成的数组
      * @param target 目标整数
-     * @return 从 nums 中找出并返回总和为 target 的元素组合的个数。
+     * @return 从 nums 中找出并返回总和为 target 的元素组合的个数。顺序不同的序列被视作不同的组合。
      */
     public int combinationSum4(int[] nums, int target) {
         int[] dp = new int[target + 1];
