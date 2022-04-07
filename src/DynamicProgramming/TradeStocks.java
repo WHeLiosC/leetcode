@@ -55,4 +55,45 @@ public class TradeStocks {
         }
         return dp[prices.length - 1][1];
     }
+
+    /**
+     * 123. 买卖股票的最佳时机 III
+     *
+     * @param prices 数组 prices，其中 prices[i] 表示股票第 i 天的价格。
+     * @return 设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。
+     * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+     */
+    public int maxProfitIII(int[] prices) {
+        // 一天中的五种状态：
+        // dp[i][0] 没有操作
+        // dp[i][1] 第一次买入，指前 i 天有一次买入，并不一定是第 i 天买入
+        // dp[i][2] 第一次卖出
+        // dp[i][3] 第二次买入
+        // dp[i][4] 第二次卖出
+        int[][] dp = new int[prices.length][5];
+        dp[0][1] = -prices[0];
+        dp[0][3] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = dp[i - 1][0];
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
+            dp[i][3] = Math.max(dp[i - 1][3], dp[i - 1][2] - prices[i]);
+            dp[i][4] = Math.max(dp[i - 1][4], dp[i - 1][3] + prices[i]);
+        }
+        return dp[prices.length - 1][4];
+    }
+
+    // 优化空间
+    public int maxProfitIIIPro(int[] prices) {
+        int n = prices.length;
+        int buy1 = -prices[0], sell1 = 0;
+        int buy2 = -prices[0], sell2 = 0;
+        for (int i = 1; i < n; ++i) {
+            buy1 = Math.max(buy1, -prices[i]);
+            sell1 = Math.max(sell1, buy1 + prices[i]);
+            buy2 = Math.max(buy2, sell1 - prices[i]);
+            sell2 = Math.max(sell2, buy2 + prices[i]);
+        }
+        return sell2;
+    }
 }
