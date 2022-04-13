@@ -96,4 +96,64 @@ public class TradeStocks {
         }
         return sell2;
     }
+
+    /**
+     * 188. 买卖股票的最佳时机 IV
+     *
+     * @param k      最多可以完成 k 笔交易
+     * @param prices 整数数组，数组 prices，其中 prices[i] 表示股票第 i 天的价格。
+     * @return 设计一个算法来计算你所能获取的最大利润。
+     */
+    public int maxProfitIV(int k, int[] prices) {
+        int n = prices.length;
+        if (n == 0 || k == 0) {
+            return 0;
+        }
+        int[] buy = new int[k];
+        int[] sell = new int[k];
+
+        for (int i = 0; i < k; i++) {
+            buy[i] = -prices[0];
+            sell[i] = 0;
+        }
+        for (int i = 1; i < n; i++) {
+            buy[0] = Math.max(buy[0], -prices[i]);
+            sell[0] = Math.max(sell[0], buy[0] + prices[i]);
+            for (int j = 1; j < k; j++) {
+                buy[j] = Math.max(buy[j], sell[j - 1] - prices[i]);
+                sell[j] = Math.max(sell[j], buy[j] + prices[i]);
+            }
+        }
+        return sell[k - 1];
+    }
+
+    /**
+     * 309. 最佳买卖股票时机含冷冻期
+     *
+     * @param prices 整数数组，数组 prices，其中 prices[i] 表示股票第 i 天的价格。
+     * @return 你可以尽可能地完成更多的交易，卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)，设计一个算法来计算你所能获取的最大利润。
+     */
+    public int maxProfitWithFreeze(int[] prices) {
+        int n = prices.length;
+        if (n == 0 || n == 1) {
+            return 0;
+        }
+        int[][] dp = new int[n][3];
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        for (int i = 1; i < n; i++) {
+            // dp[i][0] : 持有股票的最大收益
+            // dp[i][1] : 不持有股票并且在冷冻期内的最大收益
+            // dp[i][2] : 不持有股票并且不在冷冻期内的最大收益
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+            dp[i][1] = dp[i - 1][0] + prices[i];
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1]);
+        }
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+    }
+
+    public static void main(String[] args) {
+        TradeStocks ts = new TradeStocks();
+        ts.maxProfitWithFreeze(new int[]{1, 2, 3, 0, 2});
+    }
 }
