@@ -152,6 +152,30 @@ public class TradeStocks {
         return Math.max(dp[n - 1][1], dp[n - 1][2]);
     }
 
+    /**
+     * 714. 买卖股票的最佳时机含手续费
+     *
+     * @param prices 整数数组，数组 prices，其中 prices[i] 表示股票第 i 天的价格。
+     * @param fee    整数 fee 代表了交易股票的手续费用
+     * @return 你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
+     * 返回获得利润的最大值。
+     */
+    public int maxProfitWithFee(int[] prices, int fee) {
+        int n = prices.length;
+        if (n ==0 || n==1){
+            return 0;
+        }
+        int[][] dp = new int[n][2];
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        for (int i = 1; i < prices.length; i++) {
+            // dp[i][0] 表示第 i 天持有股票的所得现金；dp[i][1] 表示第 i 天不持有股票的所得现金
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] + prices[i] - fee);
+        }
+        return dp[prices.length - 1][1];
+    }
+
     public static void main(String[] args) {
         TradeStocks ts = new TradeStocks();
         ts.maxProfitWithFreeze(new int[]{1, 2, 3, 0, 2});
