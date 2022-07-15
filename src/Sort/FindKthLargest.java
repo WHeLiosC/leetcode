@@ -28,25 +28,94 @@ public class FindKthLargest {
         }
     }
 
-    private int partition(int[] array, int left, int right) {
-        int pivot = left;
-        left = left + 1;
-        while (left <= right) {
-            while (left <= right && array[left] < array[pivot]) {
-                ++left;
+    /**
+     * 快速排序分割算法
+     *
+     * @param array 待分割数组
+     * @param low   左边界
+     * @param high  右边界
+     * @return 下一次分割的索引位置
+     */
+    private int partition(int[] array, int low, int high) {
+        // 选择最左边的元素作为轴元素
+        int pivot = low;
+        low = low + 1;
+        while (low <= high) {
+            // 从左往右寻找第一个大于轴元素的元素
+            while (low <= high && array[low] < array[pivot]) {
+                ++low;
             }
-            while (left <= right && array[right] > array[pivot]) {
-                --right;
+            // 从右往左寻找第一个小于轴元素的元素
+            while (low <= high && array[high] > array[pivot]) {
+                --high;
             }
 
-            if (left < right) {
-                swap(array, left++, right--);
+            if (low < high) {
+                // 交换之后 low 右移，high 左移
+                swap(array, low++, high--);
             } else {
-                ++left;
+                // 不加该分支的话，当 low == high 的时候会陷入死循环
+                ++low;
             }
         }
-        swap(array, right, pivot);
-        return right;
+        swap(array, high, pivot);
+        return high;
+    }
+
+    /**
+     * 快速排序分割算法2 (挖坑法)
+     *
+     * @param array 待分割数组
+     * @param low   左边界
+     * @param high  右边界
+     * @return 下一次分割的索引位置
+     */
+    private int partition2(int[] array, int low, int high) {
+        // 选择最左边的元素作为轴元素
+        int pivot = array[low];
+        while (low < high) {
+            // 必须先从右边开始，第一个坑属于轴元素，找第一个小于轴元素的数
+            while (low < high && array[high] >= pivot) {
+                --high;
+            }
+            // 找到后填入，然后再去左边找大于轴元素的数
+            array[low] = array[high];
+            // 此时，high 位置相当于是新的坑，需要从左边开始找一个大于轴元素的值填入
+            while (low < high && array[low] <= pivot) {
+                ++low;
+            }
+            array[high] = array[low];
+        }
+        // 最后达到的状态是 low == high
+        // 所以 pivot 放的位置使用哪个索引都可以
+        array[high] = pivot;
+        return high;
+    }
+
+    /**
+     * 快速排序分割算法3
+     *
+     * @param array 待分割数组
+     * @param low   左边界
+     * @param high  右边界
+     * @return 下一次分割的索引位置
+     */
+    private int partition3(int[] array, int low, int high) {
+        // 选择最右边的元素作为轴元素
+        int pivot = array[high];
+        // i 表示下一个比轴元素小的元素要放得位置
+        int i = low;
+        // 遍历数组把比轴元素小的元素放到左边，比轴元素大的元素放到右边
+        for (int j = low; j <= high - 1; j++) {
+            // 比轴元素小，就把该元素放到 i 位置
+            if (array[j] < pivot) {
+                swap(array, i, j);
+                i++;
+            }
+        }
+        // 最后把轴元素放到该在的位置上
+        swap(array, i, high);
+        return i;
     }
 
     private void swap(int[] array, int index1, int index2) {
