@@ -1,10 +1,14 @@
 package Sort;
 
 
+import java.util.Random;
+
 /**
  * @author Lihui
  */
 public class FindKthLargest {
+    private static final Random RANDOM = new Random();
+
     /**
      * 215. 数组中的第K个最大元素
      *
@@ -37,10 +41,14 @@ public class FindKthLargest {
      * @return 下一次分割的索引位置
      */
     private int partition(int[] array, int low, int high) {
+        // 随机选择元素作为轴元素，有时候可以避免两侧严重不平衡的问题
+        int randomIndex = low + RANDOM.nextInt(high - low + 1);
+        swap(array, randomIndex, low);
+
         // 选择最左边的元素作为轴元素
         int pivot = low;
         low = low + 1;
-        while (low <= high) {
+        while (true) {
             // 从左往右寻找第一个大于轴元素的元素
             while (low <= high && array[low] < array[pivot]) {
                 ++low;
@@ -50,13 +58,11 @@ public class FindKthLargest {
                 --high;
             }
 
-            if (low < high) {
-                // 交换之后 low 右移，high 左移
-                swap(array, low++, high--);
-            } else {
-                // 不加该分支的话，当 low == high 的时候会陷入死循环
-                ++low;
+            if (low >= high) {
+                break;
             }
+            // 交换之后 low 右移，high 左移
+            swap(array, low++, high--);
         }
         swap(array, high, pivot);
         return high;
