@@ -35,6 +35,7 @@ public class ThreeSum {
                     tmp.add(nums[j]);
                     tmp.add(nums[k]);
                     result.add(tmp);
+                    // 容易忘记！下面的代码跳过重复的元素，避免产生重复的解
                     while (j < k && nums[j + 1] == nums[j]) {
                         ++j;
                     }
