@@ -34,6 +34,39 @@ public class ReverseList {
         return newHead;
     }
 
+    /**
+     * 92. 反转链表 II
+     *
+     * @param head  单链表的头指针
+     * @param left  整数
+     * @param right 整数
+     * @return 反转从位置 left 到位置 right 的链表节点，返回 反转后的链表
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (left >= right) {
+            return head;
+        }
+        ListNode dummyHead = new ListNode();
+        dummyHead.next = head;
+        ListNode pre = dummyHead, cur = head, start = null;
+        // left - 1 索引从 1 开始
+        for (int i = 0; i < left - 1; i++) {
+            pre = cur;
+            cur = cur.next;
+        }
+
+        start = cur;
+
+        for (int i = 0; i < right - left; i++) {
+            ListNode next = start.next;
+            start.next = next.next;
+            next.next = pre.next;
+            pre.next = next;
+        }
+
+        return dummyHead.next;
+    }
+
     public static void main(String[] args) {
         ListNode n1 = new ListNode(1);
         ListNode n2 = new ListNode(2, n1);
