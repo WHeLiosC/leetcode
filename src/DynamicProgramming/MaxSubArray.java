@@ -23,4 +23,6 @@ public class MaxSubArray {
         }
         return maxSum;
     }
+
+    // TODO: 分治法（线段树数据结构）
 }
