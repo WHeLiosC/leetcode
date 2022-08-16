@@ -3,6 +3,11 @@ package Sort;
 import java.util.Random;
 
 /**
+ * 快速排序算法
+ * 时间复杂度：平均 O(nlogn)  最好 O(nlogn)  最坏 O(n^2)
+ * 空间复杂度：O(1)
+ * 稳定性：不稳定
+ *
  * @author lihui
  */
 public class QuickSort {
