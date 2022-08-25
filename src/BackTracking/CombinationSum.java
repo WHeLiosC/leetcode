@@ -1,6 +1,4 @@
-package BackTracing;
-
-import sun.awt.image.ImageWatched;
+package BackTracking;
 
 import java.util.*;
 
@@ -22,11 +20,11 @@ public class CombinationSum {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
 
-        backTracing(candidates, target, 0, 0);
+        backTracking(candidates, target, 0, 0);
         return res;
     }
 
-    private void backTracing(int[] candidates, int target, int curSum, int begin) {
+    private void backTracking(int[] candidates, int target, int curSum, int begin) {
         if (curSum == target) {
             res.add(new ArrayList<>(path));
         }
@@ -51,7 +49,7 @@ public class CombinationSum {
             }
             path.add(candidates[i]);
             // 每一层中后面的节点不再搜索前面的节点，由于元素可以重复使用，因此下一次开始索引是 i
-            backTracing(candidates, target, curSum + candidates[i], i);
+            backTracking(candidates, target, curSum + candidates[i], i);
             path.removeLast();
         }
     }
