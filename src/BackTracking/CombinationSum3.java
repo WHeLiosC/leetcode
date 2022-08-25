@@ -1,4 +1,4 @@
-package BackTracing;
+package BackTracking;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,11 +19,11 @@ public class CombinationSum3 {
      * @return 只使用数字 1 到 9，每个数字最多使用一次，返回所有可能的有效组合的列表，不能包含相同的组合两次
      */
     public List<List<Integer>> combinationSum3(int k, int n) {
-        backTracing(k, n, 1);
+        backTracking(k, n, 1);
         return res;
     }
 
-    private void backTracing(int k, int n, int next) {
+    private void backTracking(int k, int n, int next) {
         if (n < 0) {
             return;
         }
@@ -38,7 +38,7 @@ public class CombinationSum3 {
 
         for (int i = next; i < 10 && n >= i; i++) {
             resItem.add(i);
-            backTracing(k - 1, n - i, i + 1);
+            backTracking(k - 1, n - i, i + 1);
             resItem.removeLast();
         }
     }
