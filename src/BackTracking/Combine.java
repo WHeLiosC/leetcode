@@ -1,4 +1,4 @@
-package BackTracing;
+package BackTracking;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,18 +22,18 @@ public class Combine {
         if (k <= 0 || k > n) {
             return res;
         }
-        backTracing(n, k, 1);
+        backTracking(n, k, 1);
         return res;
     }
 
-    private void backTracing(int n, int k, int cur) {
+    private void backTracking(int n, int k, int cur) {
         if (resItem.size() == k) {
             res.add(new ArrayList<>(resItem));
             return;
         }
         for (int i = cur; i <= n - (k - resItem.size()) + 1; i++) {
             resItem.add(i);
-            backTracing(n, k, i + 1);
+            backTracking(n, k, i + 1);
             resItem.removeLast();
         }
     }
