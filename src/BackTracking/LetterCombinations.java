@@ -1,4 +1,4 @@
-package BackTracing;
+package BackTracking;
 
 
 import java.util.ArrayList;
@@ -42,11 +42,11 @@ public class LetterCombinations {
             return res;
         }
 
-        backTracing(0, digits.length(), digits);
+        backTracking(0, digits.length(), digits);
         return res;
     }
 
-    private void backTracing(int index, int len, String digits) {
+    private void backTracking(int index, int len, String digits) {
         if (index == len) {
             res.add(path.toString());
             return;
@@ -55,7 +55,7 @@ public class LetterCombinations {
         String str = map.get(digits.charAt(index) - '0');
         for (int i = 0; i < str.length(); i++) {
             path.append(str.charAt(i));
-            backTracing(index + 1, len, digits);
+            backTracking(index + 1, len, digits);
             path.deleteCharAt(path.length() - 1);
         }
     }
